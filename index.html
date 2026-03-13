@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speisekarte - Restaurant Daphne</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  :root {
+    --gold: #c4a265; --gold-light: #d4b87a; --gold-dark: #9a7d4e;
+    --bg: #1a1a1a; --text: #e8e0d4; --muted: #9a958d; --desc: #8a857d;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: var(--text); font-family: 'Lora', serif; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .meander { width: 100%; height: 40px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='40' viewBox='0 0 80 40'%3E%3Cpath d='M0 0h80v10H10v10h60v10H10v10h70v-10H20V20h60V10H20V0' fill='none' stroke='%23c4a26533' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: repeat-x; background-size: 80px 40px; }
+
+  .page { width: 210mm; height: 297mm; margin: 0 auto; background: var(--bg); position: relative; page-break-after: always; break-after: page; }
+  @media print { body { background: none; } .page { margin: 0; } .no-print { display: none !important; } }
+  @media screen { .page { box-shadow: 0 20px 60px rgba(0,0,0,0.5); margin-bottom: 30px; } }
+
+  .mp { padding: 36px 42px 24px; display: flex; flex-direction: column; height: 100%; }
+  .mp::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+  .mp > * { position: relative; z-index: 1; }
+  .mc { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
+
+  /* Cover */
+  .cover { display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(ellipse at center, rgba(40,35,28,0.6) 0%, rgba(15,15,15,0.95) 70%), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80') center/cover; text-align: center; padding: 60px 40px; }
+  .cover::before { content: ''; position: absolute; inset: 0; background: rgba(10,10,10,0.75); }
+  .cover > * { position: relative; z-index: 1; }
+  .ct { font-family: 'Cinzel', serif; font-size: 28px; font-weight: 700; letter-spacing: 12px; color: var(--gold); text-transform: uppercase; }
+  .cd { width: 60%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 20px auto; }
+  .cw { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; font-style: italic; color: var(--muted); letter-spacing: 3px; }
+  .cn { font-family: 'Cinzel', serif; font-size: 72px; font-weight: 900; color: var(--gold); letter-spacing: 16px; margin: 10px 0; text-shadow: 0 2px 20px rgba(196,162,101,0.3); }
+  .cl { color: var(--gold-dark); font-size: 24px; margin: 0 12px; }
+  .cs { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; font-style: italic; color: var(--gold-dark); letter-spacing: 5px; }
+  .cc { margin-top: auto; padding-top: 60px; font-size: 11px; color: var(--muted); letter-spacing: 2px; }
+
+  /* About */
+  .ap { padding: 50px; display: flex; flex-direction: column; height: 100%; background: linear-gradient(180deg, rgba(26,26,26,0.9) 0%, rgba(26,26,26,0.7) 50%, rgba(26,26,26,0.9) 100%), url('https://images.unsplash.com/photo-1603052875302-d376b7c0638a?w=1000&q=60') center/cover; }
+  .ap .logo { font-family: 'Cinzel', serif; font-size: 40px; font-weight: 900; color: var(--gold); text-align: center; letter-spacing: 10px; margin-bottom: 30px; }
+  .ap .at { font-family: 'Cinzel', serif; font-size: 24px; color: var(--gold); text-align: center; margin: 30px 0 16px; letter-spacing: 3px; }
+  .ap p { font-family: 'Cormorant Garamond', serif; font-size: 15px; line-height: 1.7; color: var(--text); margin-bottom: 12px; text-align: justify; }
+
+  /* Section headers */
+  .sh { text-align: center; padding: 6px 0; }
+  .sh::after { content: ''; display: block; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dark), transparent); margin-top: 6px; }
+  .sh h2 { font-family: 'Cinzel', serif; font-size: 22px; font-weight: 700; color: var(--gold); letter-spacing: 6px; text-transform: uppercase; display: inline-flex; align-items: center; gap: 10px; }
+  .sh h2 .l { font-size: 13px; color: var(--gold-dark); }
+  .sub { text-align: center; margin: 2px 0; }
+  .sub h3 { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; font-style: italic; color: var(--gold-light); letter-spacing: 2px; }
+
+  /* Menu items */
+  .mi { display: flex; flex-wrap: wrap; align-items: baseline; padding: 2px 0; }
+  .mi .n { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 600; color: var(--gold-dark); min-width: 34px; }
+  .mi .nm { font-family: 'Lora', serif; font-size: 13px; font-weight: 600; color: var(--text); }
+  .mi .d { flex: 1; min-width: 20px; border-bottom: 1px dotted rgba(196,162,101,0.25); margin: 0 6px; position: relative; top: -3px; }
+  .mi .p { font-family: 'Lora', serif; font-size: 13px; font-weight: 600; color: var(--gold); white-space: nowrap; }
+  .mi .ds { width: 100%; padding-left: 34px; font-family: 'Cormorant Garamond', serif; font-size: 11.5px; font-style: italic; color: var(--desc); margin-top: -2px; letter-spacing: 0.3px; text-transform: uppercase; }
+
+  .note { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 12.5px; font-style: italic; color: var(--gold-dark); margin: 4px 0; letter-spacing: 1px; }
+
+  /* Images */
+  .hero { width: calc(100% + 84px); margin-left: -42px; height: 160px; object-fit: cover; display: block; border-bottom: 2px solid var(--gold-dark); border-top: 2px solid var(--gold-dark); flex-shrink: 0; }
+  .hero.s { height: 120px; }
+  .hp { display: flex; width: calc(100% + 84px); margin-left: -42px; height: 150px; flex-shrink: 0; border-bottom: 2px solid var(--gold-dark); border-top: 2px solid var(--gold-dark); }
+  .hp img { width: 50%; height: 100%; object-fit: cover; }
+
+  /* Footer */
+  .pf { display: flex; justify-content: space-between; align-items: center; padding: 6px 0 0; border-top: 1px solid rgba(196,162,101,0.2); margin-top: auto; flex-shrink: 0; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+  .pf .br { font-family: 'Cinzel', serif; color: var(--gold-dark); font-weight: 600; }
+  .pf .pn { font-family: 'Cinzel', serif; color: var(--gold-dark); font-size: 12px; font-weight: 700; width: 24px; height: 24px; border: 1px solid var(--gold-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+  /* Back */
+  .bc { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; background: radial-gradient(ellipse at center, rgba(30,25,20,0.4) 0%, rgba(10,10,10,0.95) 70%), url('https://images.unsplash.com/photo-1584952811565-c4c4031cd5b8?w=1200&q=80') center/cover; text-align: center; padding: 60px 50px; }
+  .bc::before { content: ''; position: absolute; inset: 0; background: rgba(10,10,10,0.8); }
+  .bc > * { position: relative; z-index: 1; }
+  .bc .lb { font-family: 'Cinzel', serif; font-size: 48px; font-weight: 900; color: var(--gold); letter-spacing: 12px; margin-bottom: 20px; }
+  .bc .ci { display: flex; align-items: center; justify-content: center; gap: 24px; font-size: 12px; color: var(--muted); letter-spacing: 2px; border-top: 1px solid rgba(196,162,101,0.3); border-bottom: 1px solid rgba(196,162,101,0.3); padding: 14px 0; }
+
+  .print-btn { position: fixed; bottom: 30px; right: 30px; background: var(--gold); color: var(--bg); border: none; padding: 14px 28px; font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; letter-spacing: 3px; cursor: pointer; border-radius: 4px; z-index: 100; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">&#9113; PDF Drucken</button>
+
+<!-- COVER -->
+<div class="page cover">
+  <div class="meander"></div><div style="flex:1"></div>
+  <div class="ct">Speisekarte</div><div class="cd"></div><div style="height:40px"></div>
+  <div class="cw">Willkommen im Restaurant</div>
+  <div><span class="cl">&#x1F33F;</span><span class="cn">Daphne</span><span class="cl">&#x1F33F;</span></div>
+  <div class="cs">Mediterranes Restaurant</div>
+  <div style="flex:2"></div>
+  <div class="cc">Eislebener Str. 70, 28329 Bremen &nbsp;|&nbsp; 0421-17507002 &nbsp;|&nbsp; www.daphnebremen.de</div>
+  <div class="meander"></div>
+</div>
+
+<!-- ABOUT -->
+<div class="page ap">
+  <div class="logo">&#x1F33F; DAPHNE &#x1F33F;</div>
+  <div class="at">&Uuml;ber &bdquo;Daphne&ldquo;</div>
+  <p>Offen und sonnendurchflutet bei Tag, gem&uuml;tlich bei Nacht, ist das Restaurant ein Ort, an dem Freunde bei gutem Essen und Trinken gern zusammenkommen.</p>
+  <p>Ob nun bei ein wenig Privatsph&auml;re mit einer Gruppe von bis zu 10 Freunden unter sich, bei einer guten Zigarette im Rauchersepar&eacute;e, oder in den Sommermonaten auf unserer Terrasse &ndash; Jeder unserer G&auml;ste ist herzlich willkommen!</p>
+  <p>Gerne richten wir auch gr&ouml;&szlig;ere Feiern f&uuml;r Sie aus. Fragen Sie uns!</p>
+  <p>Unsere Speisen werden mit viel Liebe und Sorgfalt t&auml;glich frisch zubereitet. Wir legen gro&szlig;en Wert auf Frische und haben einen hohen Qualit&auml;tsanspruch an die verwendeten Produkte.</p>
+  <div class="at">Warum &bdquo;Daphne&ldquo;?</div>
+  <p>Unser Restaurant teilt seinen Namen mit einer Figur aus der griechischen Mythologie. Daphne ist die tragische Figur im Mythos um einen Streit zwischen Apollon und Eros um den Titel des besten Bogensch&uuml;tzen. Von Apollon verh&ouml;hnt, schoss Eros zwei Pfeile. Einen mit goldener Spitze, mit dem er Apollon traf, auf dass dieser sich unsterblich in Daphne verliebte, einen Pfeil mit bleierner Spitze, der Daphne galt, auf dass sie Apollons Liebe nie erwidern werde.</p>
+  <p>Daphne, die von nun an versuchte, Apollon zu entfliehen, wusste in ihrer Verzweiflung schlie&szlig;lich keinen Ausweg mehr und flehte ihren Vater Peneus an, ihren K&ouml;rper, der Apollon so sehr den Kopf verdreht hatte, zu wandeln.</p>
+  <p>Peneus gab ihrem Flehen nach und verwandelte Daphne, getreu ihres Namens in einen Lorbeerbaum. Apollon, seiner gr&ouml;&szlig;ten Liebe beraubt, heiligt den Lorbeerkranz, schm&uuml;ckt sich mit ihm und tr&auml;gt ihn fortan immer bei sich.</p>
+</div>
+
+<!-- P3: Suppen + Vorspeisen kalt + warm -->
+<div class="page mp">
+  <img class="hero" src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=1000&q=80" alt="Antipasti">
+  <div class="mc">
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Suppen <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">01.</span><span class="nm">Hausgemachte Tagessuppe</span><span class="d"></span><span class="p">6,00 &euro;</span><span class="ds">Bitte fragen Sie uns</span></div>
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Kalte Vorspeisen <span class="l">&#x1F33F;</span></h2></div>
+    <div class="sub"><h3>Hausgemacht</h3></div>
+    <div class="mi"><span class="n">02.</span><span class="nm">Hausgemacht Zaziki</span><span class="d"></span><span class="p">4,50 &euro;</span></div>
+    <div class="mi"><span class="n">03.</span><span class="nm">Bruschetta</span><span class="d"></span><span class="p">7,50 &euro;</span><span class="ds">Ger&ouml;stetes Wei&szlig;brot mit Tomaten, Knoblauch &amp; Zwiebeln</span></div>
+    <div class="mi"><span class="n">04.</span><span class="nm">Oktopussalat traditionell</span><span class="d"></span><span class="p">8,50 &euro;</span></div>
+    <div class="mi"><span class="n">05.</span><span class="nm">Carpaccio vom Rind</span><span class="d"></span><span class="p">9,50 &euro;</span></div>
+    <div class="mi"><span class="n">06.</span><span class="nm">Olive trifft Peperoni in Oliven&ouml;l</span><span class="d"></span><span class="p">6,50 &euro;</span></div>
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Warme Vorspeisen <span class="l">&#x1F33F;</span></h2></div>
+    <div class="sub"><h3>Hausgemacht</h3></div>
+    <div class="mi"><span class="n">07.</span><span class="nm">&Uuml;berraschung f&uuml;r Zwei</span><span class="d"></span><span class="p">21,50 &euro;</span><span class="ds">Antipasti</span></div>
+    <div class="mi"><span class="n">08.</span><span class="nm">&Uuml;berraschung f&uuml;r Zwei</span><span class="d"></span><span class="p">28,50 &euro;</span><span class="ds">Antipasti &amp; Fisch</span></div>
+    <div class="mi"><span class="n">09.</span><span class="nm">Weinbl&auml;tter traditionell</span><span class="d"></span><span class="p">7,50 &euro;</span></div>
+    <div class="mi"><span class="n">10.</span><span class="nm">Dicke Bohnen traditionell</span><span class="d"></span><span class="p">9,00 &euro;</span><span class="ds">Mit Fetak&auml;se</span></div>
+    <div class="mi"><span class="n">11.</span><span class="nm">Gebratene Peperoni traditionell</span><span class="d"></span><span class="p">8,50 &euro;</span><span class="ds">Mit Knoblauch</span></div>
+    <div class="mi"><span class="n">12.</span><span class="nm">&Uuml;berbackener Fetak&auml;se traditionell</span><span class="d"></span><span class="p">9,50 &euro;</span><span class="ds">Fetak&auml;se &laquo;naturbelassen&raquo; aus dem Ofen mit Peperoni, Zwiebeln und Tomaten</span></div>
+    <div class="mi"><span class="n">13.</span><span class="nm">Gebackener Fetak&auml;se traditionell</span><span class="d"></span><span class="p">7,50 &euro;</span><span class="ds">Gebackener Fetak&auml;se, paniert</span></div>
+    <div class="mi"><span class="n">14.</span><span class="nm">Zucchini trifft Aubergine</span><span class="d"></span><span class="p">7,50 &euro;</span><span class="ds">Gebratene Zucchini und Auberginenscheiben mit Knoblauch</span></div>
+    <div class="note">Alle Vorspeisen servieren wir mit hausgemachten Br&ouml;tchen.</div>
+  </div>
+  <div class="pf"><span class="pn">4</span><span></span><span class="br">DAPHNE</span></div>
+</div>
+
+<!-- P4: Salate + Vegetarisch + Kinderteller -->
+<div class="page mp">
+  <img class="hero s" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1000&q=80" alt="Salat">
+  <div class="mc">
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Salate <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">15.</span><span class="nm">Griechischer Salat klein</span><span class="d"></span><span class="p">9,00 &euro;</span></div>
+    <div class="mi"><span class="n">16.</span><span class="nm">Griechischer Salat gro&szlig;</span><span class="d"></span><span class="p">11,00 &euro;</span></div>
+    <div class="note">Dressings: Knoblauch-Oliven&ouml;l oder Honig-Senf</div>
+    <div class="sub"><h3>Wahlweise zu unserem griechischen Salat:</h3></div>
+    <div class="mi"><span class="n">17.</span><span class="nm">Cremiger Fetak&auml;se &bdquo;natur&ldquo;</span><span class="d"></span><span class="p">5,50 &euro;</span></div>
+    <div class="mi"><span class="n">18.</span><span class="nm">Gebackener Fetak&auml;se</span><span class="d"></span><span class="p">7,00 &euro;</span></div>
+    <div class="mi"><span class="n">19.</span><span class="nm">Gegrilltes Lachsfilet</span><span class="d"></span><span class="p">8,50 &euro;</span></div>
+    <div class="mi"><span class="n">20.</span><span class="nm">Gegrillte Scampi (3 St&uuml;ck)</span><span class="d"></span><span class="p">9,00 &euro;</span></div>
+    <div class="mi"><span class="n">21.</span><span class="nm">Kross gebratene Sardinen</span><span class="d"></span><span class="p">6,50 &euro;</span></div>
+    <div class="mi"><span class="n">22.</span><span class="nm">Gegrilltes H&auml;hnchenbrustfilet</span><span class="d"></span><span class="p">6,50 &euro;</span></div>
+    <div class="mi"><span class="n">23.</span><span class="nm">Griechischer Bauernsalat traditionell</span><span class="d"></span><span class="p">13,50 &euro;</span></div>
+    <div class="mi"><span class="n">24.</span><span class="nm">Griechischer Salat mit Weinbl&auml;tter</span><span class="d"></span><span class="p">10,00 &euro;</span></div>
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Vegetarische Gerichte <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">25.</span><span class="nm">Griechischer Eintopf traditionell</span><span class="d"></span><span class="p">14,50 &euro;</span></div>
+    <div class="note">Mehr an vegetarischen Gerichten finden Sie unter Vorspeisen, Salaten, Pizza und Pasta!</div>
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Kinder-Teller <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">26.</span><span class="nm">Kinderpizza</span><span class="d"></span><span class="p">8,50 &euro;</span><span class="ds">Ein Belag nach Wunsch</span></div>
+    <div class="mi"><span class="n">27.</span><span class="nm">Kleines H&auml;hnchenschnitzel</span><span class="d"></span><span class="p">8,50 &euro;</span><span class="ds">Dazu Pommes Frites</span></div>
+    <div class="mi"><span class="n">28.</span><span class="nm">Kleine Portion Gyros oder 1 Souvlaki</span><span class="d"></span><span class="p">8,50 &euro;</span><span class="ds">Dazu Pommes Frites</span></div>
+  </div>
+  <div class="pf"><span class="br">DAPHNE</span><span></span><span class="pn">5</span></div>
+</div>
+
+<!-- P5: Fisch + Ofengerichte -->
+<div class="page mp">
+  <img class="hero" src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=1000&q=80" alt="Fisch">
+  <div class="mc">
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Fisch <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">29.</span><span class="nm">Lachsfilet</span><span class="d"></span><span class="p">23,50 &euro;</span><span class="ds">Aus dem Backofen, dazu Couscous Gem&uuml;se &amp; Aioli</span></div>
+    <div class="mi"><span class="n">30.</span><span class="nm">Kross gebratene Sardinen</span><span class="d"></span><span class="p">18,50 &euro;</span><span class="ds">Auf Thymiankartoffeln &amp; Aioli</span></div>
+    <div class="mi"><span class="n">31.</span><span class="nm">Riesen Scampi</span><span class="d"></span><span class="p">24,50 &euro;</span><span class="ds">Auf Kr&auml;uterkartoffelp&uuml;ree &amp; Aioli</span></div>
+    <div class="mi"><span class="n">32.</span><span class="nm">Schollenfilet</span><span class="d"></span><span class="p">24,50 &euro;</span><span class="ds">Auf Bratkartoffeln &amp; Aioli</span></div>
+    <div class="mi"><span class="n">33.</span><span class="nm">Calamari</span><span class="d"></span><span class="p">18,50 &euro;</span><span class="ds">Frisch geschnittene Tuben treffen auf Saisongem&uuml;se &amp; Aioli</span></div>
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Ofengerichte <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">34.</span><span class="nm">Lammfleisch traditionell</span><span class="d"></span><span class="p">24,50 &euro;</span><span class="ds">Dazu Metaxasauce &amp; Griechische Nudeln</span></div>
+    <div class="mi"><span class="n">35.</span><span class="nm">Gyros in Metaxasauce</span><span class="d"></span><span class="p">19,50 &euro;</span><span class="ds">Dazu Couscous</span></div>
+    <div class="mi"><span class="n">36.</span><span class="nm">Gyros in Champignonsauce</span><span class="d"></span><span class="p">19,50 &euro;</span><span class="ds">Dazu Pommes Frites</span></div>
+    <div class="mi"><span class="n">37.</span><span class="nm">Schweinemedaillons in Wei&szlig;weinsauce</span><span class="d"></span><span class="p">21,00 &euro;</span><span class="ds">Dazu Couscous</span></div>
+    <div class="mi"><span class="n">38.</span><span class="nm">H&auml;hnchenmedaillons in Champignonsauce</span><span class="d"></span><span class="p">20,50 &euro;</span><span class="ds">Dazu Couscous</span></div>
+    <div class="mi"><span class="n">39.</span><span class="nm">Leber vom Schwein traditionell</span><span class="d"></span><span class="p">19,00 &euro;</span><span class="ds">Dazu Couscous</span></div>
+    <div class="note">Alle Ofengerichte servieren wir mit Beilagensalat.</div>
+  </div>
+  <div class="pf"><span class="pn">6</span><span></span><span class="br">DAPHNE</span></div>
+</div>
+
+<!-- P6: Fleischgerichte vom Grill -->
+<div class="page mp">
+  <img class="hero" src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1000&q=80" alt="Grill">
+  <div class="mc">
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Fleischgerichte vom Grill <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">52.</span><span class="nm">Gyros</span><span class="d"></span><span class="p">15,50 &euro;</span><span class="ds">Vom Spie&szlig;, dazu Reis</span></div>
+    <div class="mi"><span class="n">53.</span><span class="nm">Sikoti</span><span class="d"></span><span class="p">14,50 &euro;</span><span class="ds">Leber vom Schwein, mit ger&ouml;steten Zwiebeln, dazu Couscous</span></div>
+    <div class="mi"><span class="n">54.</span><span class="nm">Pir&auml;us</span><span class="d"></span><span class="p">16,00 &euro;</span><span class="ds">Bifteki vom Grill, dazu Couscous</span></div>
+    <div class="mi"><span class="n">55.</span><span class="nm">Meteora</span><span class="d"></span><span class="p">16,00 &euro;</span><span class="ds">Schweinesteak vom Grill 250g, mit ger&ouml;steten Zwiebeln, dazu Couscous</span></div>
+    <div class="mi"><span class="n">56.</span><span class="nm">Dias</span><span class="d"></span><span class="p">16,00 &euro;</span><span class="ds">Souvlakispie&szlig;, dazu Couscous</span></div>
+    <div class="mi"><span class="n">57.</span><span class="nm">Apollon</span><span class="d"></span><span class="p">18,00 &euro;</span><span class="ds">Bifteki &uuml;berbacken, dazu Metaxasauce und Reis</span></div>
+    <div class="mi"><span class="n">58.</span><span class="nm">Larissa</span><span class="d"></span><span class="p">18,00 &euro;</span><span class="ds">Gyros &amp; Leber vom Schwein, dazu Reis</span></div>
+    <div class="mi"><span class="n">59.</span><span class="nm">Saloniki</span><span class="d"></span><span class="p">18,00 &euro;</span><span class="ds">Gyros &amp; Souvlaki, dazu Reis</span></div>
+    <div class="mi"><span class="n">60.</span><span class="nm">Athen</span><span class="d"></span><span class="p">24,50 &euro;</span><span class="ds">Lammfilet &amp; Lammkotelett, dazu Couscous</span></div>
+    <div class="mi"><span class="n">61.</span><span class="nm">Santorini</span><span class="d"></span><span class="p">19,50 &euro;</span><span class="ds">Souvlaki gef&uuml;llt mit Feta, Peperoni und Tomaten, dazu Metaxasauce &amp; Reis</span></div>
+    <div class="mi"><span class="n">62.</span><span class="nm">Mykonos</span><span class="d"></span><span class="p">20,50 &euro;</span><span class="ds">Bifteki gef&uuml;llt mit Feta, Peperoni und Tomate, dazu Couscous</span></div>
+    <div class="mi"><span class="n">63.</span><span class="nm">Attika</span><span class="d"></span><span class="p">21,50 &euro;</span><span class="ds">Kotelett vom Lamm, dazu Couscous</span></div>
+    <div class="mi"><span class="n">64.</span><span class="nm">Fileto</span><span class="d"></span><span class="p">21,50 &euro;</span><span class="ds">Gef&uuml;lltes mit Feta Schweinefilet, dazu Reis</span></div>
+    <div class="mi"><span class="n">65.</span><span class="nm">Herkules</span><span class="d"></span><span class="p">20,50 &euro;</span><span class="ds">Das Beste vom H&auml;hnchen, dazu Couscous</span></div>
+    <div class="mi"><span class="n">66.</span><span class="nm">Akropolis</span><span class="d"></span><span class="p">23,50 &euro;</span><span class="ds">Das Beste vom Schwein &amp; Lammfilet, dazu Couscous</span></div>
+    <div class="mi"><span class="n">67.</span><span class="nm">Daphne</span><span class="d"></span><span class="p">21,50 &euro;</span><span class="ds">Gyros, Souvlaki &amp; Bifteki, dazu Reis</span></div>
+    <div class="mi"><span class="n">68.</span><span class="nm">Olympia</span><span class="d"></span><span class="p">24,50 &euro;</span><span class="ds">Gyros, Souvlaki, Bifteki und Schweinesteak, dazu Reis</span></div>
+    <div class="note">Alle Fleischgerichte vom Grill servieren wir mit Beilagensalat &amp; Zaziki. Auf Wunsch auch mit Pommes Frites.</div>
+    <div class="sub"><h3>Erg&auml;nzungen:</h3></div>
+    <div class="mi"><span class="n">69.</span><span class="nm">Gyros vom Spie&szlig;</span><span class="d"></span><span class="p">7,50 &euro;</span></div>
+    <div class="mi"><span class="n">70.</span><span class="nm">Bifteki</span><span class="d"></span><span class="p">5,50 &euro;</span></div>
+    <div class="mi"><span class="n">71.</span><span class="nm">Leber vom Schwein</span><span class="d"></span><span class="p">5,50 &euro;</span></div>
+  </div>
+  <div class="pf"><span class="br">DAPHNE</span><span></span><span class="pn">8</span></div>
+</div>
+
+<!-- P7: Beilagen + Pasta -->
+<div class="page mp">
+  <div class="mc">
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Beilagen <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">40.</span><span class="nm">Gem&uuml;sereis</span><span class="d"></span><span class="p">3,20 &euro;</span></div>
+    <div class="mi"><span class="n">41.</span><span class="nm">Couscous Gem&uuml;se</span><span class="d"></span><span class="p">3,00 &euro;</span></div>
+    <div class="mi"><span class="n">42.</span><span class="nm">Dicke Bohnen</span><span class="d"></span><span class="p">6,00 &euro;</span></div>
+    <div class="mi"><span class="n">43.</span><span class="nm">Bratkartoffeln</span><span class="d"></span><span class="p">5,50 &euro;</span></div>
+    <div class="mi"><span class="n">44.</span><span class="nm">Thymiankartoffeln</span><span class="d"></span><span class="p">5,50 &euro;</span></div>
+    <div class="mi"><span class="n">45.</span><span class="nm">Pommes Frites</span><span class="d"></span><span class="p">4,00 &euro;</span></div>
+    <div class="mi"><span class="n">46.</span><span class="nm">Kr&auml;uterkartoffelp&uuml;ree</span><span class="d"></span><span class="p">5,50 &euro;</span></div>
+    <div class="mi"><span class="n">47.</span><span class="nm">Saisongem&uuml;se</span><span class="d"></span><span class="p">5,50 &euro;</span></div>
+    <div class="mi"><span class="n">48.</span><span class="nm">Griechische Nudeln</span><span class="d"></span><span class="p">6,50 &euro;</span></div>
+    <div class="sub"><h3>Saucen, Hausgemacht</h3></div>
+    <div class="mi"><span class="n">49.</span><span class="nm">Metaxasauce</span><span class="d"></span><span class="p">5,50 &euro;</span></div>
+    <div class="mi"><span class="n">50.</span><span class="nm">Champignonsauce</span><span class="d"></span><span class="p">5,50 &euro;</span></div>
+    <div class="mi"><span class="n">51.</span><span class="nm">Aioli</span><span class="d"></span><span class="p">4,50 &euro;</span></div>
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Pasta <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">72.</span><span class="nm">Hausgemachte Pasta</span><span class="d"></span><span class="p">13,50 &euro;</span><span class="ds">Aus Hartweizengrie&szlig;, Eiern &amp; Oliven&ouml;l frisch zubereitet</span></div>
+    <div class="sub"><h3>Wahlweise zu unserer Pasta:</h3></div>
+    <div class="mi"><span class="n">73.</span><span class="nm">Cremiger Fetak&auml;se &bdquo;natur&ldquo;</span><span class="d"></span><span class="p">5,50 &euro;</span></div>
+    <div class="mi"><span class="n">74.</span><span class="nm">Gebackener Fetak&auml;se</span><span class="d"></span><span class="p">6,50 &euro;</span></div>
+    <div class="mi"><span class="n">75.</span><span class="nm">Gegrilltes Lachsfilet</span><span class="d"></span><span class="p">8,50 &euro;</span></div>
+    <div class="mi"><span class="n">76.</span><span class="nm">Gegrillte Scampi (3 St&uuml;ck)</span><span class="d"></span><span class="p">9,00 &euro;</span></div>
+    <div class="mi"><span class="n">77.</span><span class="nm">Kross gebratene Sardinen</span><span class="d"></span><span class="p">6,50 &euro;</span></div>
+    <div class="mi"><span class="n">78.</span><span class="nm">Gegrilltes H&auml;hnchenbrustfilet</span><span class="d"></span><span class="p">6,50 &euro;</span></div>
+  </div>
+  <div class="pf"><span class="pn">9</span><span></span><span class="br">DAPHNE</span></div>
+</div>
+
+<!-- P8: Pizza + Desserts -->
+<div class="page mp">
+  <div class="mc">
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Pizza <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">79.</span><span class="nm">Pizza Margherita</span><span class="d"></span><span class="p">12,50 &euro;</span><span class="ds">Tomaten &amp; K&auml;se</span></div>
+    <div class="mi"><span class="n">80.</span><span class="nm">Pizza Salami</span><span class="d"></span><span class="p">13,50 &euro;</span><span class="ds">Tomaten, K&auml;se &amp; Salami</span></div>
+    <div class="mi"><span class="n">81.</span><span class="nm">Pizza Prosciutto</span><span class="d"></span><span class="p">13,50 &euro;</span><span class="ds">Tomaten, K&auml;se &amp; Schinken</span></div>
+    <div class="mi"><span class="n">82.</span><span class="nm">Pizza Funghi</span><span class="d"></span><span class="p">13,50 &euro;</span><span class="ds">Tomaten, K&auml;se &amp; Champignons</span></div>
+    <div class="mi"><span class="n">83.</span><span class="nm">Pizza Salami Funghi</span><span class="d"></span><span class="p">15,50 &euro;</span><span class="ds">Tomaten, K&auml;se, Salami &amp; Champignons</span></div>
+    <div class="mi"><span class="n">84.</span><span class="nm">Pizza Prosciutto Funghi</span><span class="d"></span><span class="p">15,50 &euro;</span><span class="ds">Tomaten, K&auml;se, Schinken &amp; Champignons</span></div>
+    <div class="mi"><span class="n">85.</span><span class="nm">Pizza Quattro Stagioni</span><span class="d"></span><span class="p">16,50 &euro;</span><span class="ds">Tomaten, K&auml;se, Paprika, Zwiebeln, Schinken &amp; Salami</span></div>
+    <div class="mi"><span class="n">86.</span><span class="nm">Pizza Tonno</span><span class="d"></span><span class="p">14,50 &euro;</span><span class="ds">Tomaten, K&auml;se, Rote Zwiebeln &amp; Thunfisch</span></div>
+    <div class="mi"><span class="n">87.</span><span class="nm">Pizza Gyros</span><span class="d"></span><span class="p">17,50 &euro;</span><span class="ds">Tomaten, K&auml;se, Rote Zwiebeln &amp; Peperoni, Gyros</span></div>
+  </div>
+  <div class="hp">
+    <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&q=80" alt="Crepes">
+    <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&q=80" alt="Tiramisu">
+  </div>
+  <div class="mc">
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Desserts <span class="l">&#x1F33F;</span></h2></div>
+    <div class="sub"><h3>Hausgemacht</h3></div>
+    <div class="mi"><span class="n">88.</span><span class="nm">Tiramisu</span><span class="d"></span><span class="p">7,50 &euro;</span></div>
+    <div class="mi"><span class="n">89.</span><span class="nm">Kadaifi Griechische Spezialit&auml;t</span><span class="d"></span><span class="p">6,50 &euro;</span><span class="ds">Dazu eine Kugel Eis</span></div>
+    <div class="mi"><span class="n">90.</span><span class="nm">Griechischer Joghurt</span><span class="d"></span><span class="p">6,50 &euro;</span><span class="ds">Mit Honig &amp; N&uuml;sse</span></div>
+    <div class="mi"><span class="n">91.</span><span class="nm">Crepes</span><span class="d"></span><span class="p">8,50 &euro;</span><span class="ds">Mit Schoko, dazu Eis</span></div>
+    <div class="mi"><span class="n">92.</span><span class="nm">Gemischtes Eis</span><span class="d"></span><span class="p">6,50 &euro;</span></div>
+  </div>
+  <div class="pf"><span class="br">DAPHNE</span><span></span><span class="pn">10</span></div>
+</div>
+
+<!-- P9: Getränke (Warm + Aperitifs + Digestifs) -->
+<div class="page mp">
+  <img class="hero s" src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1000&q=80" alt="Getränke">
+  <div class="mc">
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Getr&auml;nke <span class="l">&#x1F33F;</span></h2></div>
+    <div class="sub"><h3>Warme Getr&auml;nke</h3></div>
+    <div class="mi"><span class="n">93.</span><span class="nm">Tasse Kaffee</span><span class="d"></span><span class="p">2,30 &euro;</span></div>
+    <div class="mi"><span class="n">94.</span><span class="nm">Tasse Tee</span><span class="d"></span><span class="p">1,90 &euro;</span><span class="ds">Verschiedene Sorten</span></div>
+    <div class="mi"><span class="n">95.</span><span class="nm">Griechischer Mokka</span><span class="d"></span><span class="p">2,30 &euro;</span></div>
+    <div class="mi"><span class="n">96.</span><span class="nm">Espresso</span><span class="d"></span><span class="p">2,00 &euro;</span></div>
+    <div class="mi"><span class="n">98.</span><span class="nm">Latte Macchiato</span><span class="d"></span><span class="p">2,90 &euro;</span></div>
+    <div class="mi"><span class="n">99.</span><span class="nm">Cappuccino</span><span class="d"></span><span class="p">2,50 &euro;</span></div>
+    <div class="sub"><h3>Aperitifs</h3></div>
+    <div class="mi"><span class="n">100.</span><span class="nm">Metaxa 7 Sterne</span><span class="d"></span><span class="p">2cl &mdash; 3,80 &euro;</span></div>
+    <div class="mi"><span class="n">101.</span><span class="nm">Metaxa 5 Sterne</span><span class="d"></span><span class="p">2cl &mdash; 3,40 &euro;</span></div>
+    <div class="mi"><span class="n">102.</span><span class="nm">Martini Bianco</span><span class="d"></span><span class="p">5cl &mdash; 3,00 &euro;</span></div>
+    <div class="mi"><span class="n">103.</span><span class="nm">Martini Rosso</span><span class="d"></span><span class="p">5cl &mdash; 3,00 &euro;</span></div>
+    <div class="mi"><span class="n">104.</span><span class="nm">Grappa Gavi</span><span class="d"></span><span class="p">2cl &mdash; 3,50 &euro;</span></div>
+    <div class="mi"><span class="n">105.</span><span class="nm">Williams Birne</span><span class="d"></span><span class="p">2cl &mdash; 3,50 &euro;</span></div>
+    <div class="sub"><h3>Digestifs</h3></div>
+    <div class="mi"><span class="n">106.</span><span class="nm">Fernet Branca</span><span class="d"></span><span class="p">2cl &mdash; 2,00 &euro;</span></div>
+    <div class="mi"><span class="n">107.</span><span class="nm">Ramazzotti</span><span class="d"></span><span class="p">4cl &mdash; 4,00 &euro;</span></div>
+    <div class="mi"><span class="n">108.</span><span class="nm">J&auml;germeister</span><span class="d"></span><span class="p">2cl &mdash; 2,00 &euro;</span></div>
+    <div class="mi"><span class="n">109.</span><span class="nm">Sambuca</span><span class="d"></span><span class="p">2cl &mdash; 2,00 &euro;</span></div>
+    <div class="mi"><span class="n">110.</span><span class="nm">Ouzo</span><span class="d"></span><span class="p">2cl &mdash; 2,00 &euro;</span></div>
+    <div class="mi"><span class="n">111.</span><span class="nm">Baileys</span><span class="d"></span><span class="p">4cl &mdash; 3,50 &euro;</span></div>
+    <div class="mi"><span class="n">112.</span><span class="nm">Frangelico</span><span class="d"></span><span class="p">4cl &mdash; 3,50 &euro;</span></div>
+    <div class="mi"><span class="n">113.</span><span class="nm">Vodka</span><span class="d"></span><span class="p">2cl &mdash; 4,00 &euro;</span></div>
+    <div class="mi"><span class="n">114.</span><span class="nm">Bacardi</span><span class="d"></span><span class="p">4cl &mdash; 3,70 &euro;</span></div>
+    <div class="mi"><span class="n">115.</span><span class="nm">Havana Club</span><span class="d"></span><span class="p">4cl &mdash; 3,70 &euro;</span></div>
+    <div class="mi"><span class="n">116.</span><span class="nm">Jack Daniels Whiskey</span><span class="d"></span><span class="p">4cl &mdash; 4,00 &euro;</span></div>
+    <div class="mi"><span class="n">117.</span><span class="nm">Spirituosen als Longdrink</span><span class="d"></span><span class="p">+1,30 &euro;</span></div>
+  </div>
+  <div class="pf"><span class="pn">12</span><span></span><span class="br">DAPHNE</span></div>
+</div>
+
+<!-- P10: Alkoholfrei + Säfte + Biere -->
+<div class="page mp">
+  <div class="mc">
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Alkoholfreie Getr&auml;nke <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">118.</span><span class="nm">Coca Cola</span><span class="d"></span><span class="p">0,3l 2,50 &euro; / 0,4l 3,50 &euro;</span></div>
+    <div class="mi"><span class="n">120.</span><span class="nm">Spezi</span><span class="d"></span><span class="p">0,3l 2,50 &euro; / 0,4l 3,50 &euro;</span></div>
+    <div class="mi"><span class="n">122.</span><span class="nm">Coca Cola Light</span><span class="d"></span><span class="p">0,3l 2,50 &euro; / 0,4l 3,50 &euro;</span></div>
+    <div class="mi"><span class="n">124.</span><span class="nm">Fanta</span><span class="d"></span><span class="p">0,3l 2,50 &euro; / 0,4l 3,50 &euro;</span></div>
+    <div class="mi"><span class="n">126.</span><span class="nm">Sprite</span><span class="d"></span><span class="p">0,3l 2,50 &euro; / 0,4l 3,50 &euro;</span></div>
+    <div class="mi"><span class="n">128.</span><span class="nm">S.Pellegrino Medium</span><span class="d"></span><span class="p">0,25l 2,50 &euro; / 0,75l 5,20 &euro;</span></div>
+    <div class="mi"><span class="n">130.</span><span class="nm">Acqua Panna Naturelle</span><span class="d"></span><span class="p">0,25l 2,50 &euro; / 0,75l 5,20 &euro;</span></div>
+    <div class="mi"><span class="n">132.</span><span class="nm">Bitter Lemon</span><span class="d"></span><span class="p">0,2l &mdash; 2,30 &euro;</span></div>
+    <div class="mi"><span class="n">133.</span><span class="nm">Ginger Ale</span><span class="d"></span><span class="p">0,2l &mdash; 2,30 &euro;</span></div>
+    <div class="sub"><h3>Fruchts&auml;fte</h3></div>
+    <div class="mi"><span class="n">134.</span><span class="nm">Saftschorle</span><span class="d"></span><span class="p">0,3l 2,50 &euro; / 0,4l 3,50 &euro;</span></div>
+    <div class="mi"><span class="n">136.</span><span class="nm">Apfelsaft</span><span class="d"></span><span class="p">0,3l 2,80 &euro; / 0,4l 3,80 &euro;</span></div>
+    <div class="mi"><span class="n">138.</span><span class="nm">Orangensaft</span><span class="d"></span><span class="p">0,3l 2,80 &euro; / 0,4l 3,80 &euro;</span></div>
+    <div class="mi"><span class="n">140.</span><span class="nm">Kirsch Nektar</span><span class="d"></span><span class="p">0,3l 2,80 &euro; / 0,4l 3,80 &euro;</span></div>
+    <div class="mi"><span class="n">142.</span><span class="nm">KiBa</span><span class="d"></span><span class="p">0,3l 2,80 &euro; / 0,4l 3,80 &euro;</span></div>
+    <div class="mi"><span class="n">144.</span><span class="nm">Rhabarbersaft</span><span class="d"></span><span class="p">0,3l 2,80 &euro; / 0,4l 3,80 &euro;</span></div>
+    <div class="mi"><span class="n">146.</span><span class="nm">Maracuja Nektar</span><span class="d"></span><span class="p">0,3l 2,80 &euro; / 0,4l 3,80 &euro;</span></div>
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Biere vom Fass <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">148.</span><span class="nm">Beck&rsquo;s</span><span class="d"></span><span class="p">0,3l 3,60 &euro; / 0,4l 4,40 &euro;</span></div>
+    <div class="mi"><span class="n">150.</span><span class="nm">Alster</span><span class="d"></span><span class="p">0,3l 3,60 &euro; / 0,4l 4,40 &euro;</span></div>
+    <div class="mi"><span class="n">152.</span><span class="nm">Haake-Beck Kr&auml;usen</span><span class="d"></span><span class="p">0,3l 4,10 &euro; / 0,4l 4,80 &euro;</span></div>
+    <div class="sub"><h3>Flaschenbiere</h3></div>
+    <div class="mi"><span class="n">154.</span><span class="nm">Vita Malz</span><span class="d"></span><span class="p">2,50 &euro;</span></div>
+    <div class="mi"><span class="n">155.</span><span class="nm">Beck&rsquo;s Blue Alkoholfrei</span><span class="d"></span><span class="p">2,90 &euro;</span></div>
+    <div class="mi"><span class="n">156.</span><span class="nm">Franziskaner Kellerbier</span><span class="d"></span><span class="p">0,5l &mdash; 4,80 &euro;</span></div>
+    <div class="mi"><span class="n">157.</span><span class="nm">Franziskaner Hefeweizen</span><span class="d"></span><span class="p">4,80 &euro;</span></div>
+    <div class="mi"><span class="n">158.</span><span class="nm">Franziskaner Dunkel</span><span class="d"></span><span class="p">4,80 &euro;</span></div>
+    <div class="mi"><span class="n">159.</span><span class="nm">Franziskaner Alkoholfrei</span><span class="d"></span><span class="p">4,80 &euro;</span></div>
+  </div>
+  <div class="pf"><span class="br">DAPHNE</span><span></span><span class="pn">13</span></div>
+</div>
+
+<!-- P11: Weine -->
+<div class="page mp">
+  <img class="hero s" src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=1000&q=80" alt="Wein">
+  <div class="mc">
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Schaumweine, Secco <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">160.</span><span class="nm">Hugo mit Minze auf Eis</span><span class="d"></span><span class="p">0,25l &mdash; 5,50 &euro;</span></div>
+    <div class="sub"><h3>Griechische Weine</h3></div>
+    <div class="mi"><span class="n">161.</span><span class="nm">Prosecco Frizzante</span><span class="d"></span><span class="p">0,25l &mdash; 3,00 &euro;</span></div>
+    <div class="mi"><span class="n">162.</span><span class="nm">Aperol</span><span class="d"></span><span class="p">0,75l &mdash; 6,50 &euro;</span></div>
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Offene Wei&szlig;weine <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">163.</span><span class="nm">Weinschorle</span><span class="d"></span><span class="p">0,25l &mdash; 4,50 &euro;</span></div>
+    <div class="mi"><span class="n">164.</span><span class="nm">Demestica trocken</span><span class="d"></span><span class="p">0,25l 4,90 &euro; / 0,5l 9,50 &euro;</span></div>
+    <div class="mi"><span class="n">166.</span><span class="nm">Imiglikos lieblich</span><span class="d"></span><span class="p">0,25l 4,50 &euro; / 0,5l 9,00 &euro;</span></div>
+    <div class="mi"><span class="n">168.</span><span class="nm">Makedonikos halbtrocken</span><span class="d"></span><span class="p">0,25l 4,60 &euro; / 0,5l 9,20 &euro;</span></div>
+    <div class="mi"><span class="n">170.</span><span class="nm">Samos s&uuml;&szlig;</span><span class="d"></span><span class="p">0,25l 5,90 &euro; / 0,5l 11,80 &euro;</span></div>
+    <div class="mi"><span class="n">172.</span><span class="nm">Retsina geharzt</span><span class="d"></span><span class="p">0,25l 4,60 &euro; / 0,5l 9,20 &euro;</span></div>
+    <div class="mi"><span class="n">174.</span><span class="nm">Ros&eacute; trocken</span><span class="d"></span><span class="p">0,25l 4,50 &euro; / 0,5l 9,00 &euro;</span></div>
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Offene Rotweine <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">176.</span><span class="nm">Demestica trocken</span><span class="d"></span><span class="p">0,25l 4,90 &euro; / 0,5l 9,50 &euro;</span></div>
+    <div class="mi"><span class="n">178.</span><span class="nm">Naoussa trocken</span><span class="d"></span><span class="p">0,25l 4,60 &euro; / 0,5l 9,20 &euro;</span></div>
+    <div class="mi"><span class="n">180.</span><span class="nm">Imiglikos lieblich</span><span class="d"></span><span class="p">0,25l 4,50 &euro; / 0,5l 9,00 &euro;</span></div>
+    <div class="mi"><span class="n">182.</span><span class="nm">Makedonikos halbtrocken</span><span class="d"></span><span class="p">0,25l 4,60 &euro; / 0,5l 9,20 &euro;</span></div>
+    <div class="mi"><span class="n">184.</span><span class="nm">Mavrodaphne s&uuml;&szlig;</span><span class="d"></span><span class="p">0,25l 5,90 &euro; / 0,5l 11,80 &euro;</span></div>
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Internationale Wei&szlig;weine <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">186.</span><span class="nm">Chardonnay</span><span class="d"></span><span class="p">0,25l 5,90 &euro; / 0,5l 11,40 &euro;</span><span class="ds">Fruchtig trocken und kr&auml;ftig im Geschmack</span></div>
+    <div class="mi"><span class="n">187.</span><span class="nm">Pinot Grigio</span><span class="d"></span><span class="p">0,25l 5,70 &euro; / 0,5l 11,00 &euro;</span><span class="ds">Frisch, fruchtig und erfrischendes S&auml;urespiel</span></div>
+    <div class="mi"><span class="n">188.</span><span class="nm">Grauburgunder</span><span class="d"></span><span class="p">0,25l 5,90 &euro; / 0,5l 11,00 &euro;</span><span class="ds">Trocken, mittelkr&auml;ftig und etwas s&auml;urebetont</span></div>
+    <div class="mi"><span class="n">189.</span><span class="nm">Riesling</span><span class="d"></span><span class="p">0,25l 5,90 &euro; / 0,5l 11,60 &euro;</span><span class="ds">Fruchtige S&auml;ure, trocken und leicht im Geschmack</span></div>
+    <div class="sh"><h2><span class="l">&#x1F33F;</span> Internationale Rotweine <span class="l">&#x1F33F;</span></h2></div>
+    <div class="mi"><span class="n">190.</span><span class="nm">Bardolino</span><span class="d"></span><span class="p">0,25l 5,40 &euro; / 0,5l 11,20 &euro;</span><span class="ds">Trocken, spritzig und w&uuml;rzig leicht</span></div>
+    <div class="mi"><span class="n">191.</span><span class="nm">Merlot</span><span class="d"></span><span class="p">0,25l 5,60 &euro; / 0,5l 11,40 &euro;</span><span class="ds">Leicht halbtrocken, weich und geschmeidig</span></div>
+    <div class="mi"><span class="n">192.</span><span class="nm">Sp&auml;tburgunder</span><span class="d"></span><span class="p">0,25l 5,90 &euro; / 0,5l 11,20 &euro;</span><span class="ds">Halbtrocken, fruchtig und vollmundig</span></div>
+    <div class="sub"><h3>Ros&eacute;wein</h3></div>
+    <div class="mi"><span class="n">193.</span><span class="nm">Ros&eacute;wein-Bardolino Chiaretto</span><span class="d"></span><span class="p">0,25l 5,40 &euro; / 0,5l 10,40 &euro;</span><span class="ds">Leicht trocken, fruchtig und spritzig</span></div>
+  </div>
+  <div class="pf"><span class="pn">14</span><span></span><span class="br">DAPHNE</span></div>
+</div>
+
+<!-- BACK COVER -->
+<div class="page bc">
+  <div style="flex:1"></div>
+  <div class="meander"></div><div style="height:40px"></div>
+  <div class="lb">&#x1F33F; DAPHNE &#x1F33F;</div>
+  <div style="height:20px"></div>
+  <div class="ci">
+    <span>&#x1F4CD; Eislebener Str. 70, 28329 Bremen</span>
+    <span>&#x1F4DE; 0421-17507002</span>
+    <span>&#x1F310; www.daphnebremen.de</span>
+  </div>
+  <div style="height:30px"></div>
+  <div class="meander"></div>
+</div>
+
+</body>
+</html>
