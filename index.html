@@ -25,10 +25,10 @@
   }
   @media screen { .page { box-shadow: 0 20px 60px rgba(0,0,0,0.5); margin-bottom: 30px; } }
 
-  .mp { padding: 36px 42px 24px; display: flex; flex-direction: column; height: 100%; }
+  .mp { padding: 36px 42px 0; display: flex; flex-direction: column; height: 100%; position: relative; }
   .mp::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
   .mp > * { position: relative; z-index: 1; }
-  .mc { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
+  .mc { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; padding-bottom: 50px; }
 
   /* Cover */
   .cover { display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(ellipse at center, rgba(40,35,28,0.6) 0%, rgba(15,15,15,0.95) 70%), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80') center/cover; text-align: center; padding: 60px 40px; }
@@ -73,7 +73,7 @@
   .hp img { width: 50%; height: 100%; object-fit: cover; }
 
   /* Footer */
-  .pf { display: flex; justify-content: space-between; align-items: center; padding: 6px 0 0; border-top: 1px solid rgba(196,162,101,0.2); margin-top: auto; flex-shrink: 0; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+  .pf { position: absolute; bottom: 24px; left: 42px; right: 42px; display: flex; justify-content: space-between; align-items: center; padding: 6px 0 0; border-top: 1px solid rgba(196,162,101,0.2); font-size: 10px; color: var(--muted); letter-spacing: 1px; }
   .pf .br { font-family: 'Cinzel', serif; color: var(--gold-dark); font-weight: 600; }
   .pf .pn { font-family: 'Cinzel', serif; color: var(--gold-dark); font-size: 12px; font-weight: 700; width: 24px; height: 24px; border: 1px solid var(--gold-dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
