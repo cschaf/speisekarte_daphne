@@ -1,6 +1,6 @@
 # Speisekarte Restaurant Daphne
 
-[![Deploy to GitHub Pages](https://github.com/cschaf/speisekarte_daphne/actions/workflows/deploy.yml/badge.呈現)](https://github.com/cschaf/speisekarte_daphne/actions/workflows/deploy.yml)
+[![Deploy to GitHub Pages](https://github.com/cschaf/speisekarte_daphne/actions/workflows/deploy.yml/badge.svg)](https://github.com/cschaf/speisekarte_daphne/actions/workflows/deploy.yml)
 [![GitHub License](https://img.shields.io/github/license/cschaf/speisekarte_daphne)](LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/cschaf/speisekarte_daphne)](https://github.com/cschaf/speisekarte_daphne/commits/main)
 
