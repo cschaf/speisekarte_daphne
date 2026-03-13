@@ -17,7 +17,12 @@
   .meander { width: 100%; height: 40px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='40' viewBox='0 0 80 40'%3E%3Cpath d='M0 0h80v10H10v10h60v10H10v10h70v-10H20V20h60V10H20V0' fill='none' stroke='%23c4a26533' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: repeat-x; background-size: 80px 40px; }
 
   .page { width: 210mm; height: 297mm; margin: 0 auto; background: var(--bg); position: relative; page-break-after: always; break-after: page; }
-  @media print { body { background: none; } .page { margin: 0; } .no-print { display: none !important; } }
+  @media print { 
+    body { background: var(--bg) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } 
+    .page { margin: 0; box-shadow: none; } 
+    .no-print { display: none !important; }
+    .mp::before { display: none; } /* Disable noise filter in print as it can cause white blocks in PDFs */
+  }
   @media screen { .page { box-shadow: 0 20px 60px rgba(0,0,0,0.5); margin-bottom: 30px; } }
 
   .mp { padding: 36px 42px 24px; display: flex; flex-direction: column; height: 100%; }
