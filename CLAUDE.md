@@ -4,22 +4,25 @@ Digitales Layout-System f&uuml;r den professionellen Gastronomie-Druck.
 
 ## Architektur-Prinzipien
 - **PDF-First**: Das Layout ist f&uuml;r den A4-Export via Microsoft Edge (Headless) optimiert.
-- **Sicherheitszonen**: 30mm Seitenabstand f&uuml;r Mappen-Bindung.
-- **Surgical Design**: Einsatz von CSS Grid f&uuml;r millmetergenaue Preis-Fluchten.
+- **Lokale Assets**: Alle Bilder sind lokal im `images/` Ordner gespeichert. Keine externen URLs.
+- **Sicherheitszonen**: 30mm Seitenabstand (`padding`) f&uuml;r Mappen-Bindung.
+- **Flex & Grid Layout**: `.content` ist eine Flexbox. `.mc-grid` wird f&uuml;r die 2-spaltigen Getr&auml;nkeseiten genutzt.
 
 ## Build-Commands
 - **PDF-Export (Windows/Edge)**: 
   `& "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --headless --disable-gpu --no-pdf-header-footer --print-to-pdf="$PWD\output\export.pdf" "$PWD\index.html"`
 
 ## Styling-Guidelines (M&auml;rz 2026)
-- **Typografie**: Cinzel (Title), Lora (Dish Name), Cormorant Garamond (Desc).
-- **Abst&auml;nde**: `.content { padding: 25mm 30mm 15mm; }`
-- **Preise**: `.mi .p { white-space: nowrap; }` &ndash; niemals Preis von W&auml;hrung trennen.
-- **Bilder**: `.img-box` (Standardh&ouml;he: 180px), auf Getr&auml;nkeseiten reduziert auf 120-150px.
-- **B&uuml;ndigkeit**: Preise m&uuml;ssen am rechten Rand des Rasters fluchten (75px min-width).
+- **Typografie**: Cinzel (Titel), Lora (Gerichte), Cormorant (Beschreibungen).
+- **Preise**: `white-space: nowrap` verhindert Umbr&uuml;che bei Preisen.
+- **Bilder**:
+  - `object-fit: cover` ist Standard.
+  - `object-position: center 80%` wird f&uuml;r das Dessertbild verwendet, um den Fokus zu verschieben.
+  - H&ouml;he wird bei Bedarf via `style="height: ..."` angepasst.
+- **Print**: Der Export-Button (`.no-print`) wird via `@media print` ausgeblendet.
 
 ## URLs
 - **Web**: `https://restaurant-daphnebremen.de/`
-- **QR-Code**: `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://restaurant-daphnebremen.de/&bgcolor=050505&color=c4a265`
+- **QR-Code**: Verweist auf die Website.
 
-*Siehe `GEMINI.md` f&uuml;r detaillierte technische Parameter.*
+*Siehe `GEMINI.md` f&uuml;r eine ausf&uuml;hrliche technische Dokumentation.*
