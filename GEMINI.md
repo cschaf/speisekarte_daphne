@@ -1,71 +1,43 @@
-# Projekt-Analyse: Speisekarte Restaurant Daphne (Signature Edition)
+# Projekt-Dokumentation: Speisekarte Restaurant Daphne (Signature Edition)
 
-Dieses Projekt umfasst die Entwicklung und Perfektionierung einer digitalen Speisekarte für das mediterrane Restaurant **Daphne** in Bremen. 
+Dieses Projekt dient der Erstellung und Wartung einer hochpräzisen, 18-seitigen Speisekarte f&uuml;r das Restaurant **Daphne** in Bremen. Der Fokus liegt auf einem perfekten PDF-Export f&uuml;r den professionellen Druck (A4).
 
-**Das oberste Ziel dieses Projekts ist die Erstellung einer perfekten PDF-Datei für den hochwertigen A4-Druck und die Bindung in einer Gastronomie-Mappe.**
+## Technische Standards (Stand M&auml;rz 2026)
 
-## Projektstruktur
+### 1. Layout & Print-Pr&auml;zision
+- **Seitenformat**: Fest auf A4 (`210mm x 297mm`).
+- **Sicherheitsabstand (Binding Safe)**: `padding: 25mm 30mm 15mm` f&uuml;r die `.content`-Klasse, um sicherzustellen, dass Texte bei der Bindung in Gastronomie-Mappen nicht verdeckt werden.
+- **Vermeidung von Umbr&uuml;chen**: 
+  - `break-inside: avoid` f&uuml;r alle Gerichte (`.mi`).
+  - `white-space: nowrap` f&uuml;r Preise (`.p`) und Einheiten, um "Waisen" (z.B. ein &euro; in der n&auml;chsten Zeile) zu verhindern.
+- **Konsistenz**: Jede Inhaltsseite (2-18) verf&uuml;gt &uuml;ber eine `.border-frame` f&uuml;r einen edlen, umlaufenden Rahmen.
 
-- `index.html`: Das Master-Dokument, das Inhalt, Design und Druck-Logik vereint.
-- `.github/workflows/deploy.yml`: Pipeline für das automatische Deployment auf GitHub Pages.
-- `output/`: Lokales Verzeichnis für die generierten High-End PDF-Exporte (ignoriert via `.gitignore`).
-- `README.md`: Projektübersicht mit Status-Badges und Live-Demo Link.
-- `GEMINI.md`: Diese Dokumentation der Projektentwicklung und technischen Standards.
+### 2. Typografie & Design
+- **Cinzel**: F&uuml;r &Uuml;berschriften und Branding (klassisch-griechischer Stil).
+- **Lora**: F&uuml;r die Namen der Gerichte (hochwertige Serif).
+- **Cormorant Garamond**: F&uuml;r Beschreibungen und Fu&szlig;noten (kursiv, elegant).
+- **Mythos-Seite**: Nutzt `hyphens: auto` und einen erh&ouml;hten Zeilenabstand (`line-height: 1.9`) f&uuml;r optimale Lesbarkeit im Blocksatz.
 
-## Technische Details & "PDF-First" Fokus
+### 3. Bildsprache
+- **Qualit&auml;t**: Einsatz von stabilen, hochaufl&ouml;senden Unsplash-IDs.
+- **Platzierung**: Bilder befinden sich am Ende der Seite (`margin-top: auto`) und werden &uuml;ber die `.img-box` Klasse gesteuert.
+- **Dual-Column Layout**: Auf Getr&auml;nkeseiten (15-18) spannen Bilder &uuml;ber beide Spalten (`grid-column: 1 / -1`).
+- **H&ouml;henmanagement**: Auf vollen Seiten (z.B. Getr&auml;nke) wird die H&ouml;he der `.img-box` manuell reduziert (z.B. `120px` bis `150px`), um Overflows zu verhindern.
 
-Das Projekt wurde in mehreren Iterationen von einer einfachen Webseite zu einer hochpräzisen Druckvorlage ("Signature Edition") entwickelt.
+### 4. Digitale Integration
+- **Website**: Offizielle URL ist `https://restaurant-daphnebremen.de/`.
+- **QR-Code**: Auf der R&uuml;ckseite (S. 18) f&uuml;hrt ein dynamisch generierter QR-Code (via qrserver.com) direkt zur Reservierungsseite.
 
-- **Präzisions-Layout (CSS Grid)**: Einsatz eines 4-Spalten-Grids für die Speisen (Nummer | Name | Füllpunkte | Preis). Dies garantiert, dass die Preise im PDF auf den Millimeter genau rechtsbündig fluchten.
-- **Typografische Finesse**:
-    - **Überschriften**: `Cinzel` (klassisch-römisch) für ein zeitloses, elegantes Flair.
-    - **Gerichte**: `Lora` (Serif) für optimale Lesbarkeit.
-    - **Beschreibungen**: `Cormorant Garamond` (kursiv) für eine feine, luxuriöse Anmutung.
-    - **Initialen**: Einsatz von Drop-Caps auf der Mythos-Seite für Buchsatz-Qualität.
-- **Ästhetik & Farbe**:
-    - **Rich Black**: Verwendung von `#050505` für maximale Farbtiefe im Druck.
-    - **Gold-Akzente**: Subtile Gold-Verläufe und radial-gradient Füllpunkte, die im PDF gestochen scharf gerendert werden.
-- **Druck-Optimierung**:
-    - Feste Seitenmaße von `210mm x 297mm`.
-    - `break-inside: avoid` für alle Gerichte, um unschöne Seitenumbrüche mitten im Text zu verhindern.
-    - Deaktivierung von SVG-Turbulenz-Filtern im Druckmodus, um "weiße Blöcke" im PDF zu vermeiden.
-    - Absolute Positionierung der Seitenzahlen und Footer für konstante Platzierung.
+## PDF-Export Prozess
 
-## Die "Signature Edition" Struktur (18 Seiten)
-
-Um dem Gast ein Gefühl von Exklusivität und Ruhe zu vermitteln, wurde die Karte auf 18 Seiten entzerrt:
-
-1.  **Cover**: Minimalistisches High-End Design.
-2.  **Unsere Geschichte**: Der Daphne-Mythos im edlen Buchsatz.
-3.  **Vorspeisen**: Entzerrte Darstellung von Suppen und kalten Vorspeisen.
-4.  **Warme Vorspeisen**: Fokus auf hausgemachte Spezialitäten.
-5.  **Salate**: Übersichtliche Aufteilung mit Veredelungs-Optionen.
-6.  **Meeresfrüchte & Fisch**: Stimmungsvolle Einleitung in die Fischkultur.
-7.  **Ofengerichte**: Klassische Spezialitäten.
-8.  **Beilagen & Extras**: Logische Platzierung vor den Grillgerichten.
-9.  **Vom Grill I**: Einleitung in die Fleischgerichte.
-10. **Vom Grill II**: Fokus auf Edelstücke und Spezialitäten.
-11. **Grill Finale**: Platten für Gruppen und Ergänzungen.
-12. **Pasta & Pizza**: Italienisch-mediterrane Einflüsse.
-13. **Pizza & Kinder**: Spezialitäten für die ganze Familie.
-14. **Desserts**: Hausgemachte süße Abschlüsse.
-15. **Getränke I (Warm & Aperitifs)**: Start der Getränkekarte im **Zwei-Spalten-Layout**.
-16. **Getränke II (Digestifs & Softdrinks)**: Übersichtliche Darstellung im dualen Layout.
-17. **Biere & Weine I**: Fokus auf Fassbiere und offene Weißweine.
-18. **Weine II & Back Cover**: Rotweine und feierlicher Abschluss.
-
-## Deployment & PDF-Export
-
-### Live-Vorschau
-Das Projekt wird via GitHub Actions automatisch auf GitHub Pages bereitgestellt:
-[Daphne Live-Demo](https://cschaf.github.io/speisekarte_daphne/)
-
-### Master PDF Generation
-Der finale Export erfolgt lokal über Microsoft Edge, um die volle Kontrolle über das Rendering zu behalten:
+Der Export **muss** &uuml;ber Microsoft Edge (Headless) erfolgen, um die volle Kontrolle &uuml;ber CSS-Grids und Google Fonts zu behalten:
 
 ```powershell
 & "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --headless --disable-gpu --no-pdf-header-footer --print-to-pdf="$PWD\output\export.pdf" "$PWD\index.html"
 ```
 
-## Wartung
-Änderungen an Preisen oder Gerichten erfolgen direkt in der `index.html`. Nach jeder Änderung muss der oben genannte Befehl ausgeführt werden, um das `export.pdf` zu aktualisieren und die visuelle Integrität zu prüfen.
+## Wartungs-Checkliste
+1. Preise in `index.html` anpassen.
+2. Bei langen Texten sicherstellen, dass `.mi .p` nicht umbricht.
+3. PDF exportieren.
+4. Pr&uuml;fung: Fluchten alle Preise rechtsb&uuml;ndig? Reicht der Platz f&uuml;r die Bindung (30mm links/rechts)? Sind alle Bilder geladen?
